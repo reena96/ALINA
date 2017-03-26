@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="Scene and Object Identification">
+      <meta name="author" content="Admin">
+      <title>Scene and Object Identification</title>
+      <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+      <!-- <link rel="stylesheet" href="../dist/css/lightbox.min.css"> -->
+      <style type="text/css">
+         .row{
+         margin-top:40px;
+         padding: 0 10px;
+         }
+         .clickable{
+         cursor: pointer;   
+         }
+         .panel-heading span {
+         margin-top: -20px;
+         font-size: 15px;
+         }
+         
+      </style>
+      <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+      <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.js"></script>
+      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+      <!-- Script to instantly classify an image once it is uploaded. -->
+      <script type="text/javascript">
+         $(document).ready(
+           function(){
+             $('#classifyfile').attr('disabled',true);
+             $('#reply').submit(
+               function(){
+                 if ($(this).val()){
+                   $('#formchat').submit();
+                 }
+               }
+             );
+             $('#imagefile').change(
+               function(){
+                 if ($(this).val()){
+                   $('#formface').submit();
+                 }
+               }
+             );
+             $('#findname').submit(
+               function(){
+                 if ($(this).val()){
+                   $('#formname').submit();
+                 }
+               }
+             );
+           }
+         );
+          
+        
+         function laden()
+         
+         {
+         
+         window.open('http://www.google.nl rel="width[640];height[480];autostart[true];loop[true];title[Google]" class="jcepopup"', 'blablabla', 'width=720', 'heigt=500');
+         
+         }
+         
+      </script>
+      <style>
+         body {
+         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+         line-height:1.5em;
+         color: #232323;
+         -webkit-font-smoothing: antialiased;
+         }
+         h1, h2, h3{
+         font-family: Times, serif;
+         line-height:1.5em;
+         border-bottom: 1px solid #ccc;
+         color: #006994
+         }
+         h4, h5{
+         font-family: Times, serif;
+         line-height:1.5em;
+         border-bottom: 1px solid #ccc;
+         color: #232323;
+         }
+      </style>
+   </head>
+   <body>
+      <!-- Begin page conorm-inlinetent -->
+      <div class="container">
+         <div class="page-header">
+            <center>
+               <h2><a href="/">ALINA- Interactive Facial Recognizer Robot</a></h2>
+            </center>
+         </div>
+        
+         <div class="row">
+            <div class="col-md-12">
+               <div class="panel panel-primary">
+                  <div class="panel-heading">
+                     <h3 class="panel-title">Chat with ALINA:</h3>
+                     <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                  </div>
+                  <div class="panel-body">
+                    <form id="formchat" class="form-inline" role="form" action="alina_chat" method="get">
+                        <div class="form-group">
+                          <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="chatrequest" id="chatrequest" placeholder="Text with Alina here:">
+                                <span class="input-group-btn">
+                                    <input class="btn btn-primary" value="See Alina's reply" type="submit" id="reply"></input>
+                                </span>
+                            </div>
+                          </div>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+        </div>  
+
+        
+       
+         <br>
+         {% if has_result %}
+            {% if not has_result %}
+                <div class="alert alert-danger">{{ result }}</div>
+            {% else %}
+        <div id="divchat">
+            <div class="pull-right col-sm-7">
+                <div class="alert alert-info"><strong>Me:</strong> {{ chatrequest_o }}</div>
+            </div> 
+            
+            <div class="pull-left col-sm-7">
+                <div class="alert alert-success"><strong>Alina:</strong> {{ result }}</div>
+            </div>
+        </div>   
+            {% endif %}
+         <hr>
+         {% endif %}
+        
+        
+        <div class="row">
+            <div class="col-md-12">
+               <div class="panel panel-info">
+                  <div class="panel-heading">
+                     <h3 class="panel-title">Stand in front of the BOT and let yourself be clicked.</h3>
+                     <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                  </div>
+                  <div class="panel-body">
+                     <form id="formface" action="face_identify" class="form-inline" role="form" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                         <div class="col-sm-7">
+                            <input type="file" name="imagefile" id="imagefile">
+                         </div>
+                        </div>
+                        <!--<input type="submit" class="btn btn-primary" value="Classify File" id="classifyfile"></input>-->
+                     </form>
+                     <form id="formname" action="find_name" class="form-inline" role="form" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                         <div class="col-sm-7">
+                            <input type="submit" class="btn btn-primary" value="Find Name" id="findname"></input>
+                         </div>
+                        </div>
+                        <!---->
+                     </form>
+                  </div>
+               </div>
+            </div>
+        </div> 
+      
+      
+       {% if has_result_face %}
+            {% if not has_result_face %}
+                <div class="alert alert-danger"></div>
+            {% else %}
+         <a class="pull-right" href="#"><img class="img-responsive" width="400" height="400" src={{ imgsrc }}></a>   
+        <div id="divchat">
+            <div class="pull-right col-sm-12">
+                <div class="alert alert-info"><strong>{{ faceresult }}</strong>Welcome! Nice to see you back in FlyDubai.</div>
+            </div> 
+            
+        </div>   
+            {% endif %}
+         <hr>
+         {% endif %}
+
+          {% if has_result_name %}
+            {% if not has_result_name %}
+                <div class="alert alert-danger"></div>
+            {% else %}
+        <div id="divchat">
+            <div class="pull-right col-sm-12">
+                <div class="alert alert-info"><strong>{{ nameresult }}</strong>Welcome! Nice to see you back in FlyDubai.</div>
+            </div> 
+            
+        </div>   
+            {% endif %}
+         <hr>
+         {% endif %}
+      <script type="text/javascript">
+         $(document).on('click', '.panel-heading span.clickable', function(e){
+             var $this = $(this);
+         	if(!$this.hasClass('panel-collapsed')) {
+         		$this.parents('.panel').find('.panel-body').slideDown();
+         		$this.addClass('panel-collapsed');
+         		$this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+         	} else {
+         		$this.parents('.panel').find('.panel-body').slideUp();
+         		$this.removeClass('panel-collapsed');
+         		$this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+         	}
+         })
+      </script>
+      <!-- <script src="../dist/js/lightbox-plus-jquery.min.js"></script> -->
+   </body>
+</html>
