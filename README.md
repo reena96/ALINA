@@ -1,2 +1,2 @@
 # ALINA
-Interactive Face Recognition Robot
+Interactive Face Recognition Robot- AI FRAMEWORK FOR AIRLINES
